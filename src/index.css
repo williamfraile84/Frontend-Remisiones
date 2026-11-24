@@ -1,0 +1,560 @@
+@import "tailwindcss";
+
+@variant dark (&:where(.dark, .dark *));
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+    height: 100%;
+    text-size-adjust: 100%;
+    color-scheme: light dark;
+  }
+
+  html,
+  body,
+  #root {
+    overflow-x: hidden;
+    max-width: 100vw;
+    width: 100%;
+  }
+
+  body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    min-height: 100%;
+    min-height: 100dvh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #f8fafc;
+    color: #0f172a;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  html.dark body,
+  html[data-theme="dark"] body {
+    background-color: #030712;
+    color: #f8fafc;
+  }
+
+  html.light body,
+  html[data-theme="light"] body {
+    background-color: #f8fafc;
+    color: #0f172a;
+  }
+
+  /* Prevenir auto-zoom en inputs en iOS Safari sin forzar tamaño a botones */
+  input[type="text"],
+  input[type="number"],
+  input[type="email"],
+  input[type="password"],
+  select,
+  textarea {
+    font-size: 16px;
+    touch-action: manipulation;
+  }
+
+  @media (min-width: 640px) {
+    input[type="text"],
+    input[type="number"],
+    input[type="email"],
+    input[type="password"],
+    select,
+    textarea {
+      font-size: inherit;
+    }
+  }
+
+  /* Números tabulares para alineación precisa de cifras monetarias */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* ==============================================================================
+   TOKENS DE DISEÑO Y PALETA VISUAL MODERNA (FRUVER ORDERS)
+   ============================================================================== */
+:root {
+  --fruver-brand: #10b981;
+  --fruver-brand-hover: #059669;
+  --fruver-brand-glow: rgba(16, 185, 129, 0.35);
+  --fruver-lime: #84cc16;
+  --fruver-amber: #f59e0b;
+  --fruver-rose: #f43f5e;
+  --fruver-blue: #3b82f6;
+  --fruver-violet: #8b5cf6;
+}
+
+/* Scrollbar personalizado delgado y responsivo */
+.custom-scrollbar {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 #f1f5f9;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Scrollbar en Modo Oscuro */
+html.dark .custom-scrollbar {
+  scrollbar-color: #334155 #0a0f1d;
+}
+
+html.dark .custom-scrollbar::-webkit-scrollbar-track {
+  background: #0a0f1d;
+}
+
+html.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+html.dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #10b981;
+}
+
+/* Soporte para áreas seguras de pantalla en dispositivos modernos (iOS Notch & Home Bar) */
+.pb-safe {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
+
+.pt-safe {
+  padding-top: max(0.75rem, env(safe-area-inset-top));
+}
+
+/* Microinteracciones táctiles y botones responsivos */
+.btn-tactile {
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.btn-tactile:active {
+  transform: scale(0.97);
+}
+
+.btn-tactile:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #020617, 0 0 0 4px #10b981;
+}
+
+/* Tarjeta contenedora con soporte dark/light */
+.card-fruver {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 12px -2px rgba(15, 23, 42, 0.05), 0 2px 4px -2px rgba(15, 23, 42, 0.03);
+  border-radius: 1.25rem;
+}
+
+html.dark .card-fruver {
+  background-color: rgba(15, 23, 42, 0.88);
+  border: 1px solid rgba(51, 65, 85, 0.55);
+  box-shadow: 0 20px 25px -5px rgba(2, 6, 23, 0.5), 0 8px 10px -6px rgba(2, 6, 23, 0.5);
+}
+
+/* Estilos de impresión para la remisión oficial */
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+  #remision-printable, #remision-printable * {
+    visibility: visible !important;
+  }
+  #remision-printable {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+}
+
+/* ==============================================================================
+   REGLAS GLOBALES DE ALTO CONTRASTE Y COBERTURA COMPLETA TEMA OSCURO (HTML.DARK)
+   Garantiza que toda la aplicación (tarjetas, inputs, tablas, modales, iconos) se adapte.
+   ============================================================================== */
+html.dark {
+  color-scheme: dark;
+}
+
+html.dark body {
+  background-color: #030712 !important;
+  color: #f8fafc !important;
+}
+
+/* Modales, Tarjetas y Contenedores */
+html.dark .bg-white {
+  background-color: #0f172a !important;
+  color: #f8fafc;
+}
+
+html.dark .bg-slate-50,
+html.dark .bg-slate-50\/50,
+html.dark .bg-slate-50\/60,
+html.dark .bg-slate-50\/70,
+html.dark .bg-slate-50\/80,
+html.dark .bg-slate-50\/90,
+html.dark .bg-gray-50 {
+  background-color: #111c30 !important;
+}
+
+html.dark .bg-slate-100,
+html.dark .bg-slate-100\/70,
+html.dark .bg-slate-100\/80,
+html.dark .bg-slate-100\/90,
+html.dark .bg-slate-200\/70,
+html.dark .bg-gray-100 {
+  background-color: #1e293b !important;
+}
+
+html.dark .bg-slate-200,
+html.dark .bg-slate-200\/80,
+html.dark .bg-gray-200 {
+  background-color: #334155 !important;
+}
+
+/* Badges y Contenedores Temáticos de Acento en Modo Oscuro (Fondos translúcidos elegantes) */
+html.dark .bg-emerald-50,
+html.dark .bg-emerald-50\/40,
+html.dark .bg-emerald-50\/50,
+html.dark .bg-emerald-50\/60,
+html.dark .bg-emerald-50\/70,
+html.dark .bg-emerald-100,
+html.dark .bg-emerald-100\/70 {
+  background-color: rgba(16, 185, 129, 0.16) !important;
+  border-color: rgba(16, 185, 129, 0.35) !important;
+}
+
+html.dark .bg-amber-50,
+html.dark .bg-amber-50\/20,
+html.dark .bg-amber-50\/40,
+html.dark .bg-amber-50\/50,
+html.dark .bg-amber-100,
+html.dark .bg-amber-100\/40,
+html.dark .bg-amber-100\/70,
+html.dark .bg-amber-200\/80 {
+  background-color: rgba(245, 158, 11, 0.16) !important;
+  border-color: rgba(245, 158, 11, 0.35) !important;
+}
+
+html.dark .bg-blue-50,
+html.dark .bg-blue-50\/20,
+html.dark .bg-blue-50\/40,
+html.dark .bg-blue-50\/50,
+html.dark .bg-blue-100 {
+  background-color: rgba(59, 130, 246, 0.16) !important;
+  border-color: rgba(59, 130, 246, 0.35) !important;
+}
+
+html.dark .bg-rose-50,
+html.dark .bg-rose-100 {
+  background-color: rgba(244, 63, 94, 0.16) !important;
+  border-color: rgba(244, 63, 94, 0.35) !important;
+}
+
+html.dark .bg-purple-50,
+html.dark .bg-purple-100 {
+  background-color: rgba(168, 85, 247, 0.16) !important;
+  border-color: rgba(168, 85, 247, 0.35) !important;
+}
+
+html.dark .bg-indigo-50,
+html.dark .bg-indigo-100 {
+  background-color: rgba(99, 102, 241, 0.16) !important;
+  border-color: rgba(99, 102, 241, 0.35) !important;
+}
+
+html.dark .bg-teal-50,
+html.dark .bg-teal-100 {
+  background-color: rgba(20, 184, 166, 0.16) !important;
+  border-color: rgba(20, 184, 166, 0.35) !important;
+}
+
+/* Bordes en Modo Oscuro */
+html.dark .border-slate-100,
+html.dark .border-slate-200,
+html.dark .border-slate-200\/60,
+html.dark .border-slate-200\/70,
+html.dark .border-slate-200\/80,
+html.dark .border-slate-200\/90,
+html.dark .border-slate-300,
+html.dark .border-slate-300\/60,
+html.dark .border-gray-200,
+html.dark .border-gray-300 {
+  border-color: #1e293b !important;
+}
+
+html.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]),
+html.dark .divide-slate-200 > :not([hidden]) ~ :not([hidden]),
+html.dark .divide-slate-200\/70 > :not([hidden]) ~ :not([hidden]),
+html.dark .divide-gray-100 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #1e293b !important;
+}
+
+/* Tipografía de Alto Contraste en Modo Oscuro */
+html.dark .text-slate-950,
+html.dark .text-slate-900,
+html.dark .text-gray-950,
+html.dark .text-gray-900 {
+  color: #f8fafc !important;
+}
+
+html.dark .text-slate-800,
+html.dark .text-gray-800 {
+  color: #e2e8f0 !important;
+}
+
+html.dark .text-slate-700,
+html.dark .text-gray-700 {
+  color: #cbd5e1 !important;
+}
+
+html.dark .text-slate-600,
+html.dark .text-gray-600 {
+  color: #94a3b8 !important;
+}
+
+html.dark .text-slate-500,
+html.dark .text-gray-500 {
+  color: #94a3b8 !important;
+}
+
+html.dark .text-slate-400,
+html.dark .text-gray-400 {
+  color: #94a3b8 !important;
+}
+
+html.dark .text-slate-300 {
+  color: #cbd5e1 !important;
+}
+
+/* Colores de Acento Luminosos y Legibles en Modo Oscuro */
+html.dark .text-amber-950,
+html.dark .text-amber-900,
+html.dark .text-amber-800,
+html.dark .text-amber-700 {
+  color: #fbbf24 !important;
+}
+
+html.dark .text-emerald-950,
+html.dark .text-emerald-900,
+html.dark .text-emerald-800,
+html.dark .text-emerald-700 {
+  color: #34d399 !important;
+}
+
+html.dark .text-blue-950,
+html.dark .text-blue-900,
+html.dark .text-blue-800,
+html.dark .text-blue-700 {
+  color: #60a5fa !important;
+}
+
+html.dark .text-purple-950,
+html.dark .text-purple-900,
+html.dark .text-purple-800,
+html.dark .text-purple-700 {
+  color: #c084fc !important;
+}
+
+html.dark .text-indigo-950,
+html.dark .text-indigo-900,
+html.dark .text-indigo-800,
+html.dark .text-indigo-700 {
+  color: #818cf8 !important;
+}
+
+html.dark .text-rose-950,
+html.dark .text-rose-900,
+html.dark .text-rose-800,
+html.dark .text-rose-700 {
+  color: #fb7185 !important;
+}
+
+html.dark .text-teal-950,
+html.dark .text-teal-900,
+html.dark .text-teal-800,
+html.dark .text-teal-700 {
+  color: #2dd4bf !important;
+}
+
+/* Formularios, Inputs y Controles en Modo Oscuro */
+html.dark input,
+html.dark select,
+html.dark textarea {
+  background-color: #111c30 !important;
+  color: #f8fafc !important;
+  border-color: #1e293b !important;
+}
+
+html.dark input:focus,
+html.dark select:focus,
+html.dark textarea:focus {
+  background-color: #16243d !important;
+  border-color: #10b981 !important;
+  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.25) !important;
+}
+
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #64748b !important;
+}
+
+html.dark input:disabled,
+html.dark select:disabled,
+html.dark textarea:disabled {
+  background-color: #0b1120 !important;
+  color: #64748b !important;
+  border-color: #1e293b !important;
+  opacity: 0.7;
+}
+
+/* Inputs con acentos numéricos en la tabla de liquidación */
+html.dark input.text-amber-950,
+html.dark input[class*="text-amber"] {
+  color: #fbbf24 !important;
+}
+
+html.dark input.text-emerald-950,
+html.dark input.text-emerald-800,
+html.dark input[class*="text-emerald"] {
+  color: #34d399 !important;
+}
+
+html.dark input.text-blue-950,
+html.dark input[class*="text-blue"] {
+  color: #60a5fa !important;
+}
+
+html.dark select option {
+  background-color: #0f172a !important;
+  color: #f8fafc !important;
+}
+
+/* Tablas en Modo Oscuro */
+html.dark table thead tr {
+  background-color: #0b1120 !important;
+  border-color: #1e293b !important;
+}
+
+html.dark table thead th {
+  background-color: #0b1120 !important;
+  color: #cbd5e1 !important;
+  border-color: #1e293b !important;
+}
+
+html.dark table thead th.bg-amber-50\/50,
+html.dark table thead th.bg-amber-100\/40 {
+  background-color: rgba(245, 158, 11, 0.12) !important;
+  color: #fbbf24 !important;
+}
+
+html.dark table thead th.bg-slate-50 {
+  background-color: #0b1120 !important;
+  color: #e2e8f0 !important;
+}
+
+html.dark table thead th.bg-emerald-50\/40,
+html.dark table thead th.bg-emerald-50\/60 {
+  background-color: rgba(16, 185, 129, 0.12) !important;
+  color: #34d399 !important;
+}
+
+html.dark table thead th.bg-blue-50\/40 {
+  background-color: rgba(59, 130, 246, 0.12) !important;
+  color: #60a5fa !important;
+}
+
+html.dark table tbody tr {
+  border-color: #1e293b !important;
+}
+
+html.dark table tbody tr:hover {
+  background-color: rgba(30, 41, 59, 0.45) !important;
+}
+
+html.dark td.bg-amber-50\/20,
+html.dark td.bg-amber-100\/10 {
+  background-color: rgba(245, 158, 11, 0.06) !important;
+}
+
+html.dark td.bg-slate-50\/40 {
+  background-color: rgba(15, 23, 42, 0.3) !important;
+}
+
+html.dark td.bg-emerald-50\/20 {
+  background-color: rgba(16, 185, 129, 0.06) !important;
+}
+
+html.dark td.bg-blue-50\/20 {
+  background-color: rgba(59, 130, 246, 0.06) !important;
+}
+
+/* Gradients en Modo Oscuro */
+html.dark .from-emerald-50,
+html.dark .via-teal-50,
+html.dark .to-white {
+  --tw-gradient-from: #0f172a !important;
+  --tw-gradient-to: #0b1120 !important;
+  --tw-gradient-stops: var(--tw-gradient-from), #111c30, var(--tw-gradient-to) !important;
+}
+
+/* Control de iconos SVGs para visibilidad en Modo Oscuro */
+html.dark svg.text-slate-400,
+html.dark .text-slate-400 svg {
+  color: #94a3b8;
+}
+
+html.dark svg.text-slate-500,
+html.dark .text-slate-500 svg {
+  color: #94a3b8;
+}
+
+html.dark svg.text-slate-600,
+html.dark .text-slate-600 svg {
+  color: #cbd5e1;
+}
+
+html.dark svg.text-gray-400,
+html.dark .text-gray-400 svg {
+  color: #94a3b8;
+}
+
+/* ==============================================================================
+   CONTROL RESPONSIVO DE MÁRGENES Y DESBORDAMIENTOS
+   Garantiza que tablas, modales y tarjetas respeten los límites de pantalla.
+   ============================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Contención estricta de tablas en contenedores scrollables */
+.overflow-x-auto {
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+  min-width: 0;
+}
+
+/* Modales adaptables que nunca se salen de los márgenes de la pantalla */
+.modal-container {
+  max-width: min(100vw - 1.5rem, 52rem);
+  max-height: min(92dvh, calc(100vh - 2rem));
+}

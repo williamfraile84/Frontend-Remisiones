@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+    <link id="app-manifest" rel="manifest" href="/manifest.json" crossorigin="use-credentials" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+    <meta name="theme-color" content="#059669" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Sistema Fruver" />
+    <meta name="description" content="Sistema Profesional de Gestión de Pedidos, Clientes, Remisiones Digitales y Liquidación Logística" />
+    <title>Sistema Fruver - Gestión de Pedidos y Logística</title>
+    <script>
+      // 0. Inicialización inmediata del Tema y Soporte de Captura
+      (function() {
+        try {
+          var params = new URLSearchParams(window.location.search);
+          if (params.get('dev_auto_auth') === '1') {
+            var token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTgyNzAzMjQ4NX0.RT4vbOUd1soj3OpOA-4jK8aWV4V4IrNqqPPdAiS2xGI";
+            var adminUser = {
+              id: 1,
+              username: "admin",
+              nombre_completo: "Administrador Principal",
+              email: "admin@empresa.com",
+              rol: "admin",
+              permisos: {
+                puede_crear_pedidos: true,
+                puede_editar_pedidos: true,
+                puede_desactivar_pedidos: true,
+                puede_cerrar_pedidos: true,
+                puede_ver_historial: true,
+                puede_ver_surtido: true,
+                puede_crear_surtido: true,
+                puede_verificar_checklist: true,
+                puede_liquidar_surtido: true,
+                puede_conciliar_pos: true,
+                puede_aplicar_precios_catalogo: true,
+                puede_ver_financiero: true,
+                puede_editar_costos: true,
+                puede_modificar_margenes: true,
+                puede_gestionar_gastos: true,
+                puede_exportar: true,
+                puede_ver_documentos: true,
+                puede_cargar_documentos: true,
+                puede_cargar_facturas: true,
+                puede_cargar_remisiones_firmadas: true,
+                puede_gestionar_clientes: true,
+                puede_ver_catalogo: true,
+                puede_crear_productos: true,
+                puede_editar_productos: true,
+                puede_configurar_empaques: true,
+                puede_administrar_usuarios: true,
+                puede_ver_auditoria: true,
+                puede_configurar_empresa: true
+              }
+            };
+            localStorage.setItem('app_token', token);
+            localStorage.setItem('fruver_token', token);
+            localStorage.setItem('app_user', JSON.stringify(adminUser));
+            localStorage.setItem('fruver_user', JSON.stringify(adminUser));
+            var emp = {
+              id: 1,
+              nombre: "FRUVER DEL YANUBA",
+              nit: "40327379-6",
+              direccion: "CR 17 #38-15 BARRIO SANTA HELENA"
+            };
+            localStorage.setItem('app_empresa_cache', JSON.stringify(emp));
+            localStorage.setItem('app_empresas_lista', JSON.stringify([emp]));
+          }
+          var t = params.get('theme') || localStorage.getItem('fruver_orders_theme') || localStorage.getItem('fruver_theme');
+          if (t === 'light' || (!t && window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches)) {
+            document.documentElement.classList.add('light');
+            document.documentElement.classList.remove('dark');
+            document.documentElement.setAttribute('data-theme', 'light');
+            document.documentElement.style.colorScheme = 'light';
+            localStorage.setItem('fruver_orders_theme', 'light');
+          } else {
+            document.documentElement.classList.add('dark');
+            document.documentElement.classList.remove('light');
+            document.documentElement.setAttribute('data-theme', 'dark');
+            document.documentElement.style.colorScheme = 'dark';
+            localStorage.setItem('fruver_orders_theme', 'dark');
+          }
+        } catch(e) {}
+      })();
+      window.__pwaInstallPrompt = null;
+      window.addEventListener('beforeinstallprompt', function(e) {
+        e.preventDefault();
+        window.__pwaInstallPrompt = e;
+        window.dispatchEvent(new CustomEvent('pwa-prompt-available', { detail: e }));
+      });
+      window.addEventListener('appinstalled', function() {
+        window.__pwaInstallPrompt = null;
+        window.dispatchEvent(new CustomEvent('pwa-app-installed'));
+      });
+      // Registro de Service Worker para PWA y soporte offline
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/sw.js').then(function(reg) {
+            reg.addEventListener('updatefound', function() {
+              var newWorker = reg.installing;
+              if (newWorker) {
+                newWorker.addEventListener('statechange', function() {
+                  if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    console.info('[PWA] Nueva versión disponible');
+                  }
+                });
+              }
+            });
+          }).catch(function(err) {
+            console.debug('[PWA] Service worker no activado en este contexto:', err);
+          });
+        });
+      }
+    </script>
+  </head>
+  <body class="bg-slate-100 dark:bg-slate-900 text-slate-900 dark:text-slate-100 antialiased selection:bg-emerald-500 selection:text-white transition-colors duration-200">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
